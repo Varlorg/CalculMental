@@ -7,7 +7,19 @@ public class JeuCalculGUI implements KeyListener
     JeuCalcul jeu;
     
     JFrame fenetre;
+
+    JMenuBar menuBar;
     
+    JMenu mJeu;
+    JMenuItem mQuitter;
+    JMenuItem mReset;
+    JMenuItem mJouer;
+
+    JMenu mApropos;
+    JMenuItem mVersion;
+    JMenuItem mAbout;
+
+
     JPanel pBouton;
     JButton bJouer;
     JButton bReset;
@@ -32,13 +44,38 @@ public class JeuCalculGUI implements KeyListener
     {
         fenetre = new JFrame("Calcul mental");
         //fenetre.setSize(700, 300);
-        fenetre.setPreferredSize(new Dimension(450,140));
+        fenetre.setPreferredSize(new Dimension(450,170));
         //Nous demandons maintenant à notre objet de se positionner au centre
         fenetre.setLocationRelativeTo(null);
         //Termine le processus lorsqu'on clique sur la croix rouge
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenetre.getContentPane().setLayout(new BorderLayout());
-       
+      
+
+        
+        menuBar = new JMenuBar();
+        
+        mJeu = new JMenu("Jeu");
+        mQuitter = new JMenuItem("Quitter");
+        mQuitter.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent arg0) {
+            System.exit(0);
+            }        
+            });
+        mJouer = new JMenuItem("Jouer");
+        mJouer.addActionListener(new ActionJouer());
+        mReset = new JMenuItem("Nouvelle Partie");
+        mReset.addActionListener(new ActionReset());
+        mJeu.add(mJouer);
+        mJeu.add(mReset);
+        mJeu.add(mQuitter);
+        menuBar.add(mJeu);
+    
+        mApropos = new JMenu("Aide");
+        menuBar.add(mApropos);
+        
+        fenetre.setJMenuBar(menuBar);
+        
         pBouton = new JPanel();
         pExpression = new JPanel();
         pInfo = new JPanel();
@@ -154,7 +191,8 @@ public class JeuCalculGUI implements KeyListener
            labelScore.setText(jeu.getScore()+"");
 
             jeu.supprimerExpression();
-            labelExpression.setText(jeu.retournerExpression().toString());
+            //labelExpression.setText(jeu.retournerExpression().toString());
+            labelExpression.setText("");
             reponse = jeu.retournerExpression().solution();
             labelReponse.setText("");
             if(horloge != null)
@@ -175,11 +213,11 @@ public class JeuCalculGUI implements KeyListener
     {
         public void actionPerformed(ActionEvent ec)
         {
-        labelExpression.setText(jeu.retournerExpression().toString());
+            labelExpression.setText(jeu.retournerExpression().toString());
             if(horloge == null)
             {
                 horloge = new java.util.Timer();
-                horloge.schedule( new Decompte()  ,0,1000);
+                horloge.schedule( new Decompte()  ,1000,1000);
                 bJouer.setEnabled(false);
             }
         }
