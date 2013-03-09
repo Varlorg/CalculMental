@@ -1,0 +1,25 @@
+Pour executer le jar :
+    java -jar CalculMental.jar
+
+Explication des différentes possibilité avec make.
+
+Pour compiler :
+    make compile
+
+Pour compiler puis créer le jar :
+    make jar
+
+Pour créer uniquement le jar :
+    make ojar
+
+Pour lancer le jeu :
+    make run
+
+Pour compiler puis lancer le jeu : 
+    make crun
+
+Pour lancer le jar :
+    make jrun
+
+Pour nettoyer le .class :
+    make clean

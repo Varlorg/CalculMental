@@ -13,7 +13,7 @@ public class JeuCalcul
 
     public JeuCalcul(int nb)
     {
-        listExpression = new ArrayList<Expression>();
+        this();
         for(int i=0; i<nb;i++)
         {
             Expression e = new Expression();
@@ -99,6 +99,4 @@ public class JeuCalcul
             }
         }
     }
-
-
 }

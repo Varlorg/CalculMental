@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.event.*;
 
 public class JeuCalculGUI implements KeyListener
 {
@@ -30,52 +31,79 @@ public class JeuCalculGUI implements KeyListener
     JLabel labelTemps;
     int temps= 30;
     JLabel textTemps;
-   
+
+    JPanel pJeu = new JPanel(new BorderLayout());
     JPanel pExpression;
     JLabel labelExpression;
+    JLabel labelResultat;
+    ImageIcon iResultatTrouve;
+    ImageIcon iResultatFaux;
     JTextField labelReponse;
     int reponse;
 
+    JLabel labelSolution = new JLabel("",SwingConstants.CENTER);
     JPanel pInfo;
     JLabel labelScore;
 
+    //Font fSoluce = new Font("Cambria",Font.BOLD | Font.ITALIC, 12);
+    Font fLibe = (new Font("Liberation Sans",Font.BOLD , 12)).deriveFont(14.0f);
+    Font fCamb = (new Font("Cambria",Font.BOLD , 12)).deriveFont(14.0f);
+    Font fCambMini = (new Font("Cambria",Font.BOLD , 12)).deriveFont(12.0f);
 
     public JeuCalculGUI()
     {
+        /*Creation de la fenetre générale
+         *
+         */
         fenetre = new JFrame("Calcul mental");
         //fenetre.setSize(700, 300);
-        fenetre.setPreferredSize(new Dimension(450,170));
+        fenetre.setPreferredSize(new Dimension(450,200));
         //Nous demandons maintenant à notre objet de se positionner au centre
         fenetre.setLocationRelativeTo(null);
         //Termine le processus lorsqu'on clique sur la croix rouge
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenetre.getContentPane().setLayout(new BorderLayout());
       
-
-        
+        /*Creation du menu
+          *
+          */
         menuBar = new JMenuBar();
-        
+        /* menu Jeu */ 
         mJeu = new JMenu("Jeu");
+        mJeu.setFont(fCambMini);
         mQuitter = new JMenuItem("Quitter");
+        mQuitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
+	                                                  KeyEvent.CTRL_MASK));
         mQuitter.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent arg0) {
             System.exit(0);
             }        
             });
         mJouer = new JMenuItem("Jouer");
+        mJouer.setFont(fCambMini);
         mJouer.addActionListener(new ActionJouer());
+        
         mReset = new JMenuItem("Nouvelle Partie");
+        mReset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+	                                                  KeyEvent.CTRL_MASK));
         mReset.addActionListener(new ActionReset());
         mJeu.add(mJouer);
         mJeu.add(mReset);
         mJeu.add(mQuitter);
         menuBar.add(mJeu);
-    
-        mApropos = new JMenu("Aide");
-        menuBar.add(mApropos);
         
+        /* menu Aide */
+        mApropos = new JMenu("Aide");
+        mApropos.setFont(fCambMini);
+        menuBar.add(mApropos);
+       
+        /* Ajout de la barre  ala fenetre */
         fenetre.setJMenuBar(menuBar);
         
+
+        /*
+         * Initialisation des panel
+         */
         pBouton = new JPanel();
         pExpression = new JPanel();
         pInfo = new JPanel();
@@ -83,19 +111,22 @@ public class JeuCalculGUI implements KeyListener
 
         /* Creation des bouton */
         bJouer = new JButton("Jouer");
+        bJouer.setFont(fCamb);
         pBouton.add(bJouer);
         bJouer.addActionListener(new ActionJouer());
 
         bReset = new JButton("Nouvelle Partie");
+        bReset.setFont(fCamb);
+
         pBouton.add(bReset);
         bReset.addActionListener(new ActionReset());
         
         bQuitter = new JButton("Quitter");
+        bQuitter.setFont(fCamb);
         pBouton.add(bQuitter);
         bQuitter.addActionListener(new ActionQuitter());
 
         fenetre.getContentPane().add(pBouton, BorderLayout.SOUTH);
-
 
         jeu = new JeuCalcul(1);
 
@@ -104,26 +135,43 @@ public class JeuCalculGUI implements KeyListener
         labelExpression = new JLabel ("");
         labelExpression.setPreferredSize( new Dimension( 80, 40 ) );
         pExpression.add(labelExpression);
+
         reponse = jeu.retournerExpression().solution();
         labelReponse = new JTextField();
         labelReponse.setPreferredSize( new Dimension( 40, 24 ) );
         labelReponse.addKeyListener(this); 
+        labelReponse.setEnabled(false);
         pExpression.add(labelReponse);
 
-        fenetre.getContentPane().add(pExpression, BorderLayout.CENTER);
+        
+        labelResultat = new JLabel("");
+        labelResultat.setPreferredSize(new Dimension(64,48));
+        labelResultat.setHorizontalAlignment(SwingConstants.RIGHT);
+        pExpression.add(labelResultat);
+
+        iResultatTrouve = new ImageIcon("img/right.png");
+        iResultatFaux = new ImageIcon("img/wrong.png");
+
+        pJeu.add(pExpression,BorderLayout.CENTER);
+        //fenetre.getContentPane().add(pExpression, BorderLayout.CENTER);
+        fenetre.getContentPane().add(pJeu, BorderLayout.CENTER);
 
         /*Panneau du score*/
         JLabel textScore = new JLabel("Score : ");
+        textScore.setFont(fCamb);
         pInfo.add(textScore);
         labelScore = new JLabel(jeu.getScore()+"");
-        labelScore.setPreferredSize(new Dimension(40,24));
+        labelScore.setFont(fCamb);
+        labelScore.setPreferredSize(new Dimension(42,24));
         pInfo.add(labelScore);
         
         fenetre.getContentPane().add(pInfo, BorderLayout.EAST);
         
-       /* COmpte a rebour*/ 
+       /* Compte a rebour*/ 
         textTemps = new JLabel("Temps Restant : ");
+        textTemps.setFont(fCamb);
         labelTemps = new JLabel(Integer.toString(temps));
+        labelTemps.setFont(fCamb);
         pChrono.add(textTemps);
         pChrono.add(labelTemps);
         fenetre.getContentPane().add(pChrono, BorderLayout.NORTH);
@@ -133,8 +181,20 @@ public class JeuCalculGUI implements KeyListener
         fenetre.setVisible(true);
     }
 
+    /*public class FenetreMenu
+    {
+        Frame fMenu = new JFrame("Calcul Mental - Menu");
+        JLabel labelJeu = new JLabel("Niveau");
+        JLabel labelQuitter = new JLabel("Quitter");
+        //labelQuitter.addActionListener(new ActionQuitter());
+
+        fMenu.pack();
+        fMenu.setVisible(true);
+    }*/
+
     public static void main(String[] args)
     {
+        //fenetreMenu();
         new JeuCalculGUI();
         
     }
@@ -148,10 +208,24 @@ public class JeuCalculGUI implements KeyListener
         {
             try
             {
+                    labelSolution.setText("");
+                    labelSolution.setFont(fLibe);
                     if(reponse == Integer.parseInt(labelReponse.getText()))
                     {
                         jeu.incScore();
+                        //labelResultat  = labelResultatTrouve;
+                        labelResultat.setIcon(iResultatTrouve);
+                        labelSolution.setForeground(Color.green);
                     }
+                    else
+                    {
+                        //labelResultat = labelResultatFaux;
+                        labelResultat.setIcon(iResultatFaux);
+                        labelSolution.setForeground(Color.red);
+                    }
+                    labelSolution.setText( "La solution de " + jeu.retournerExpression().toString2() + " est " + reponse  );
+                    pJeu.add(labelSolution, BorderLayout.SOUTH);
+                    labelSolution.setPreferredSize(new Dimension(170,30));
                     jeu.supprimerExpression();
                     labelExpression.setText(jeu.retournerExpression().toString());
                     reponse = jeu.retournerExpression().solution();
@@ -187,10 +261,12 @@ public class JeuCalculGUI implements KeyListener
     {
         public void actionPerformed(ActionEvent ec)
         {
-           jeu.razScore();
-           labelScore.setText(jeu.getScore()+"");
+            jeu.razScore();
+            labelScore.setText(jeu.getScore()+"");
 
+            labelSolution.setText("");
             jeu.supprimerExpression();
+            labelResultat.setIcon(null);
             //labelExpression.setText(jeu.retournerExpression().toString());
             labelExpression.setText("");
             reponse = jeu.retournerExpression().solution();
@@ -216,8 +292,9 @@ public class JeuCalculGUI implements KeyListener
             labelExpression.setText(jeu.retournerExpression().toString());
             if(horloge == null)
             {
+                labelReponse.setEnabled(true);
                 horloge = new java.util.Timer();
-                horloge.schedule( new Decompte()  ,1000,1000);
+                horloge.schedule( new Decompte(),1000,1000);
                 bJouer.setEnabled(false);
             }
         }
@@ -230,7 +307,6 @@ public class JeuCalculGUI implements KeyListener
                 temps--;
             if (temps == 0) 
             {
-
                 //labelReponse.disable();
                 labelReponse.setEnabled(false);
                 horloge.cancel();
@@ -240,6 +316,4 @@ public class JeuCalculGUI implements KeyListener
             labelTemps.setText(temps+"");
         }
     }
-
 }
-

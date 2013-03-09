@@ -1,21 +1,33 @@
 import java.lang.Math.*;
 
-enum Operateur { moins, plus}
+enum Operateur { moins, plus, multiplie, divise}
 
 public class Expression 
 {
-    private int borneSup = 20;
+    private int borneSup;
     private int operandeG;
     private int operandeD;
     private Operateur operateur;
 
     public Expression()
     {
+		borneSup = 20;
+		calculExpression();
+    }
+    
+    public Expression(int borne)
+    {
+		borneSup = borne;
+		calculExpression();
+	}
+
+	public void calculExpression()
+	{
         operandeG = randomOperande();
         operandeD = randomOperande();
-        operateur = randomOperateur();
-    }
-
+        operateur = randomOperateur();	
+	}
+	
     public int getOperandeG()
     {
         return this.operandeG;
@@ -67,6 +79,12 @@ public class Expression
             case moins:
                 solution = this.operandeG - this.operandeD;
                 break;
+            case multiplie:
+                solution = this.operandeG * this.operandeD;
+                break;
+            case divise:
+                solution = this.operandeG / this.operandeD;
+                break;
             default:
                 break;
         }
@@ -109,6 +127,26 @@ public class Expression
         }
 
         exp += this.operandeD +" = ";
+        return exp;
+    }
+
+    public String toString2()
+    {
+        String exp = null;
+        exp = ""+this.operandeG + " ";
+        switch(this.operateur)
+        {
+            case plus :
+                exp += " + ";
+                break;
+            case moins:
+                exp += " - ";
+                break;
+            default:
+                break;
+        }
+
+        exp += this.operandeD +  "";
         return exp;
     }
 

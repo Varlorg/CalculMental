@@ -1,4 +1,4 @@
 Manifest-Version: 1.1 
 Created-By: Adrian Poiget
-Main-Class: JeuCalculGui 
+Main-Class: JeuCalculGUI 
 Class-Path: .
