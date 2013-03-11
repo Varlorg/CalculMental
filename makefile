@@ -2,6 +2,7 @@
 default: classes
 
 classes:
+	@mkdir -p bin
 	javac -g -classpath bin -sourcepath src src/*.java -d bin
 
 jar:
@@ -22,5 +23,6 @@ jrun:
 	make jar
 	java -jar CalculMental.jar
 
+#Supprimer les fichiers class
 clean:
 	rm bin/*.class
