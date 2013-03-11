@@ -1,20 +1,22 @@
 
-compile:
-	javac -sourcepath src -classpath bin src/*.java -d bin
+default: classes
+
+classes:
+	javac -g -classpath bin -sourcepath src src/*.java -d bin
 
 jar:
-	make compile
+	make classes
 	make ojar
 
 ojar:
 	jar cvfm CalculMental.jar Manifest  -C bin . 
 
 run:
-	java -cp bin/ JeuCalculGUI
+	java -cp bin JeuCalculGUI
 
 crun:
-	make compile
-	java -cp bin/ JeuCalculGUI
+	make classes
+	make run	
 
 jrun:
 	make jar

@@ -1,6 +1,7 @@
 import java.lang.Math.*;
 
-enum Operateur { moins, plus, multiplie, divise}
+/*  les différents types d'opération possible */
+enum Operateur { SOUSTRACTION , ADDITION, MULTIPLICATION, DIVISION }
 
 public class Expression 
 {
@@ -8,6 +9,7 @@ public class Expression
     private int operandeG;
     private int operandeD;
     private Operateur operateur;
+    private char difficulte;
 
     public Expression()
     {
@@ -15,10 +17,26 @@ public class Expression
 		calculExpression();
     }
     
-    public Expression(int borne)
+    public Expression(char niveau)
     {
-		borneSup = borne;
-		calculExpression();
+        difficulte = niveau;
+        switch(niveau)
+        {
+		    case 'e':
+                break;
+            case 'f':
+		        borneSup = 20;
+                break;
+            case 'm':
+		        borneSup = 40;
+                break;
+            case 'd':
+		        borneSup = 100;
+                break;
+            default:
+                break;
+        }
+        calculExpression();
 	}
 
 	public void calculExpression()
@@ -55,10 +73,10 @@ public class Expression
         switch(decision)
         {
             case 0:
-                op = Operateur.moins;
+                op = Operateur.SOUSTRACTION;
                 break;
             case 1:
-                op =  Operateur.plus;
+                op =  Operateur.ADDITION;
                 break;
             default:
                 break;
@@ -73,16 +91,16 @@ public class Expression
 
         switch(operateur)
         {
-            case plus:
+            case ADDITION:
                 solution = this.operandeG + this.operandeD;
                 break;
-            case moins:
+            case SOUSTRACTION:
                 solution = this.operandeG - this.operandeD;
                 break;
-            case multiplie:
+            case MULTIPLICATION:
                 solution = this.operandeG * this.operandeD;
                 break;
-            case divise:
+            case DIVISION:
                 solution = this.operandeG / this.operandeD;
                 break;
             default:
@@ -97,10 +115,10 @@ public class Expression
         System.out.print(this.operandeG);
         switch(this.operateur)
         {
-            case plus :
+            case ADDITION :
                 System.out.print(" + ");
                 break;
-            case moins:
+            case SOUSTRACTION:
                 System.out.print(" - ");
                 break;
             default:
@@ -113,20 +131,7 @@ public class Expression
     public String toString()
     {
         String exp = null;
-        exp = ""+this.operandeG + " ";
-        switch(this.operateur)
-        {
-            case plus :
-                exp += " + ";
-                break;
-            case moins:
-                exp += " - ";
-                break;
-            default:
-                break;
-        }
-
-        exp += this.operandeD +" = ";
+        exp = this.toString2() + " = ";
         return exp;
     }
 
@@ -136,10 +141,10 @@ public class Expression
         exp = ""+this.operandeG + " ";
         switch(this.operateur)
         {
-            case plus :
+            case ADDITION :
                 exp += " + ";
                 break;
-            case moins:
+            case SOUSTRACTION:
                 exp += " - ";
                 break;
             default:

@@ -46,9 +46,9 @@ public class JeuCalculGUI implements KeyListener
     JLabel labelScore;
 
     //Font fSoluce = new Font("Cambria",Font.BOLD | Font.ITALIC, 12);
-    Font fLibe = (new Font("Liberation Sans",Font.BOLD , 12)).deriveFont(14.0f);
-    Font fCamb = (new Font("Cambria",Font.BOLD , 12)).deriveFont(14.0f);
-    Font fCambMini = (new Font("Cambria",Font.BOLD , 12)).deriveFont(12.0f);
+    Font fLibe = new Font("Liberation Sans",Font.BOLD , 14);
+    Font fCamb = new Font("Cambria",Font.BOLD , 14);
+    Font fCambMini = new Font("Cambria",Font.BOLD , 13);
 
     public JeuCalculGUI()
     {
@@ -128,7 +128,7 @@ public class JeuCalculGUI implements KeyListener
 
         fenetre.getContentPane().add(pBouton, BorderLayout.SOUTH);
 
-        jeu = new JeuCalcul(1);
+        jeu = new JeuCalcul('d');
 
         /* Panneau contenant l'expression et la saisie */
         //labelExpression = new JLabel (jeu.retournerExpression().toString());

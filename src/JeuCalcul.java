@@ -4,21 +4,24 @@ public class JeuCalcul
 {
     ArrayList<Expression> listExpression;
     int score;
+    char difficulte;
 
     public JeuCalcul()
     {
         listExpression = new ArrayList<Expression>();
         score = 0;
+        difficulte = 'e';
+        Expression e = new Expression();
+        this.listExpression.add(e);
     }
 
-    public JeuCalcul(int nb)
+    public JeuCalcul(char niveau)
     {
-        this();
-        for(int i=0; i<nb;i++)
-        {
-            Expression e = new Expression();
-            this.listExpression.add(e);
-        }
+        listExpression = new ArrayList<Expression>();
+        score = 0;
+        difficulte = niveau;
+        Expression e = new Expression(difficulte);
+        this.listExpression.add(e);
     }
 
     public void incScore()
@@ -39,7 +42,7 @@ public class JeuCalcul
 
     public void  ajouterExpression()
     {
-        Expression e = new Expression();
+        Expression e = new Expression(difficulte);
         this.listExpression.add(e);
     }
 
@@ -71,7 +74,7 @@ public class JeuCalcul
 
     public static void main(String[] args)
     {
-        JeuCalcul jeu= new JeuCalcul(15);
+        JeuCalcul jeu= new JeuCalcul();
         Scanner sc = new Scanner(System.in);
         for(int j = 0; j <15;j++)
         {
