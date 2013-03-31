@@ -5,17 +5,13 @@ import javax.swing.event.*;
 
 public class JeuCalculGUI
 {
-    JeuCalcul jeu;
-
     public JeuCalculGUI()
     {
-
+        new FenetreMenu(new FenetreModele());
     }
 
     public static void main(String[] args)
     {
-        //fenetreMenu();
         new JeuCalculGUI();
-        
     }
 }

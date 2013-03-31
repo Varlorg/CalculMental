@@ -51,10 +51,10 @@ public class JeuCalcul
         if(this.listExpression.size() != 0)
         {
             this.ajouterExpression();
-            return this.listExpression.get(0); 
-            
+            return this.listExpression.get(0);
+
         }
-         else
+        else
             return null;
     }
 
@@ -62,8 +62,8 @@ public class JeuCalcul
     {
         if(this.listExpression.size() != 0)
         {
-            this.listExpression.remove(0); 
-            
+            this.listExpression.remove(0);
+
         }
     }
 
@@ -76,12 +76,12 @@ public class JeuCalcul
     {
         JeuCalcul jeu= new JeuCalcul();
         Scanner sc = new Scanner(System.in);
-        for(int j = 0; j <15;j++)
+        for(int j = 0; j <15; j++)
         {
             try
             {
-            Expression e = jeu.retournerExpression();
-            e.afficherExpression();
+                Expression e = jeu.retournerExpression();
+                e.afficherExpression();
                 int solutionUser = sc.nextInt();
                 if(e.solution() == solutionUser)
                 {
