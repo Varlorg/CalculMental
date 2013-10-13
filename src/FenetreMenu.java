@@ -6,114 +6,52 @@ import javax.swing.event.*;
 public class FenetreMenu  extends JPanel
 {
     FenetreModele fm;
-    JFrame fenetre;
 
     JPanel pAction = new JPanel();
     JPanel pCentre = new JPanel();
+
     JButton bJeu = new JButton("Jouer");
     JButton bScore = new JButton("Score");
     JButton bQuitter = new JButton("Quitter");
-    JMenuItem mReset;
-    JMenuItem mJouer;
 
-    JMenuBar menuBar;
-
-    JMenu mJeu;
-    JMenuItem mQuitter;
-
-
-    JMenu mApropos;
-    JMenuItem mVersion;
-    JMenuItem mAbout;
-    //bQuitter.addActionListener(new ActionQuitter());
-
-	JLabel labelPresentation = new JLabel("Bienvenue dans ce jeu de calcul mental !");
-    /*fMenu.pack();
-    fMenu.setVisible(true);*/
+    JLabel labelPresentation = new JLabel("Bienvenue dans ce jeu de calcul mental !");
 
     public FenetreMenu(FenetreModele f)
     {
         this.fm = f;
         this.fm.setTitre("Calcul Mental - Menu");
-        this.fenetre = fm.getJFrame();
-		//labelPresentation.setText("Bienvenue dans ce jeu de calcul mental !");
-	   /*Creation du menu
-		 *
-		 */
-		menuBar = new JMenuBar();
-		/* menu Jeu */
-		mJeu = new JMenu("Jeu");
-		mJeu.setFont(FenetreModele.fCambMini);
-		mQuitter = new JMenuItem("Quitter");
-		mQuitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-								KeyEvent.CTRL_MASK));
-		mQuitter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
-		/*mJouer = new JMenuItem("Jouer");
-		mJouer.setFont(fCambMini);
-		mJouer.addActionListener(new ActionJouer());
 
-		mReset = new JMenuItem("Nouvelle Partie");
-		mReset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
-													  KeyEvent.CTRL_MASK));
-		mReset.addActionListener(new ActionReset());
-		mJeu.add(mJouer);
-		mJeu.add(mReset);
-		mJeu.add(mQuitter);*/
-		menuBar.add(mJeu);
-
-		/* menu Aide */
-		mApropos = new JMenu("Aide");
-		mApropos.setFont(FenetreModele.fCambMini);
-		mVersion = new JMenuItem("Version");
-		mAbout = new JMenuItem("A propos");
-		mApropos.add(mAbout);
-		mApropos.add(mVersion);
-		menuBar.add(mApropos);
-
-		/* Ajout de la barre  a la fenetre */
-		fenetre.setJMenuBar(menuBar);
-
-
-
+        labelPresentation.setText("Bienvenue dans ce jeu de calcul mental !");
+        labelPresentation.setFont(new Font(null, Font.BOLD, 17));
         bQuitter.addActionListener(new ActionQuitter());
-        mJouer = new JMenuItem("Niveau");
-        mJouer.setFont(FenetreModele.fCambMini);
-        mJouer.addActionListener(new ActionJouer());
-
-        mJeu.add(mJouer);
-        mJeu.add(mQuitter);
-
         bJeu.addActionListener(new ActionJouer());
         bScore.addActionListener(new ActionScore());
+		f.mJouer.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent event)
+            {
+                    fm.niveau();
+            }
+        });
         
         pCentre.add(labelPresentation);
-        
+        this.add(Box.createRigidArea(new Dimension(0,100)));
         pAction.add(bJeu);
         pAction.add(bScore);
         pAction.add(bQuitter);
-        
 
-        fenetre.getContentPane().add(pAction, BorderLayout.SOUTH);
-        fenetre.getContentPane().add(pCentre, BorderLayout.CENTER);
-        
-        fenetre.pack();
-        fenetre.setVisible(true);
-
+        this.add(pCentre, BorderLayout.CENTER);
+        this.add(pAction, BorderLayout.SOUTH);
     }
+    
     class ActionJouer implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
         {
             fm.niveau();
-            /*fenetre.dispose();
-            new FenetreJeu();*/
         }
     }
-    
+
     class ActionScore implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
@@ -121,7 +59,7 @@ public class FenetreMenu  extends JPanel
             fm.score();
         }
     }
-    
+
     class ActionQuitter implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
@@ -129,5 +67,4 @@ public class FenetreMenu  extends JPanel
             System.exit(0);
         }
     }
-
 }

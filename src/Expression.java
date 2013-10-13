@@ -44,6 +44,14 @@ public class Expression
         operandeG = randomOperande();
         operandeD = randomOperande();
         operateur = randomOperateur();
+        if(difficulte == 'f'  || difficulte == 'e' )
+        {
+            while(this.solution() < 0 || this.solution() >= 30)
+            {
+                System.out.println("Recalcul de l'expression");
+                this.calculExpression();
+            }
+        }
     }
 
     public int getOperandeG()
