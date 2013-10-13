@@ -57,7 +57,23 @@ public class FenetreModele
 		this.fenetre.getContentPane().add(ecranNiveau);
 		ecranNiveau.revalidate();
     }
-
+    
+    public void score()
+    {
+        fenetre.getContentPane().removeAll();
+        FenetreScore ecranScore = new FenetreScore(this);
+		this.fenetre.getContentPane().add(ecranScore);
+		ecranScore.revalidate();
+    }
+    
+    public void record(int score)
+    {
+        fenetre.getContentPane().removeAll();
+        FenetreRecord ecranRecord = new FenetreRecord(this, score);
+		this.fenetre.getContentPane().add(ecranRecord);
+		ecranRecord.revalidate();
+    }  
+     
     public JFrame getJFrame()
     {
         return this.fenetre;
@@ -67,9 +83,5 @@ public class FenetreModele
     {
         this.fenetre.setTitle(nom);
     }
-
-
-    
-
 
 }

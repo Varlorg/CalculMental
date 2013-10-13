@@ -2,20 +2,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.*;
+import java.util.*;
+import java.io.*;
 
-public class FenetreNiveau extends JPanel
+public class FenetreScore  extends JPanel
 {
     FenetreModele fm;
     JFrame fenetre;
+    
+	JTextArea textScore  = new JTextArea(5, 20);
 
-    JPanel pAction = new JPanel();
-    JPanel pNiveau = new JPanel();
-	JLabel LabelNiveau  = new JLabel();
 	
-    JButton bRetour = new JButton("Retour");
+    JPanel pAction = new JPanel();
+    JButton bJeu = new JButton("Jouer");
+    JButton bScore = new JButton("Retour");
     JButton bQuitter = new JButton("Quitter");
-
-    JMenuItem mRetour;
+    JMenuItem mReset;
     JMenuItem mJouer;
 
     JMenuBar menuBar;
@@ -31,13 +33,23 @@ public class FenetreNiveau extends JPanel
 
     /*fMenu.pack();
     fMenu.setVisible(true);*/
-
-    public FenetreNiveau(FenetreModele f)
+	ObjectInputStream ois;
+    public FenetreScore(FenetreModele f)
     {
+			JScrollPane scrollPane = new JScrollPane(textScore); 
+	textScore.setEditable(false);
         this.fm = f;
-        this.fm.setTitre("Calcul Mental - Niveau");
+        this.fm.setTitre("Calcul Mental - Score");
         this.fenetre = fm.getJFrame();
-		
+
+		/*try{
+			FileInputStream fscores = new FileInputStream("scores");
+			ois = new ObjectInputStream(fscores);
+			scores = (Hashtable) ois.readObject();
+						ois.close();
+		}catch(Exception e){
+			System.out.println("Table des scores inexistante !");
+		}*/
 		
 	   /*Creation du menu
 		 *
@@ -58,12 +70,12 @@ public class FenetreNiveau extends JPanel
 		mJouer.setFont(fCambMini);
 		mJouer.addActionListener(new ActionJouer());
 
-		mRetour = new JMenuItem("Nouvelle Partie");
-		mRetour.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+		mReset = new JMenuItem("Nouvelle Partie");
+		mReset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
 													  KeyEvent.CTRL_MASK));
-		mRetour.addActionListener(new ActionRetour());
+		mReset.addActionListener(new ActionReset());
 		mJeu.add(mJouer);
-		mJeu.add(mRetour);
+		mJeu.add(mReset);
 		mJeu.add(mQuitter);*/
 		menuBar.add(mJeu);
 
@@ -79,62 +91,41 @@ public class FenetreNiveau extends JPanel
 		/* Ajout de la barre  a la fenetre */
 		fenetre.setJMenuBar(menuBar);
 
-        /*mJouer = new JMenuItem("Niveau");
+        bQuitter.addActionListener(new ActionQuitter());
+        mJouer = new JMenuItem("Niveau");
         mJouer.setFont(FenetreModele.fCambMini);
         mJouer.addActionListener(new ActionJouer());
 
-        mJeu.add(mJouer);*/
+        mJeu.add(mJouer);
         mJeu.add(mQuitter);
 
+		//Affichage score
+		HighscoreManager hm = new HighscoreManager();
+		 System.out.print(hm.getHighscoreString());
+		 textScore.append(hm.getHighscoreString());
 
-
-        /*
-         *Niveau 
-         */
-		LabelNiveau.setText("Choisissez un niveau\n");
-		pNiveau.add(LabelNiveau);
-		
-        JButton bFacile = new JButton("Facile"); 
-        bFacile.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
-            fm.jeu('f');
-            }
-        });
-        pNiveau.add(bFacile);
-        JButton bMoyen = new JButton("Moyen");
-        bMoyen.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
-            fm.jeu('m');
-            }
-        });
-        pNiveau.add(bMoyen);
-        JButton bDifficile = new JButton("Difficile");
-        bDifficile.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
-            fm.jeu('d');
-            }
-        });
-        pNiveau.add(bDifficile);
-
-        bQuitter.addActionListener(new ActionQuitter());
-		bRetour.addActionListener(new ActionRetour());
-        pAction.add(bRetour);
+        bJeu.addActionListener(new ActionJouer());
+        bScore.addActionListener(new ActionRetour());
+        pAction.add(bJeu);
+        pAction.add(bScore);
         pAction.add(bQuitter);
-        fenetre.add("North",pNiveau);
+        
+        fenetre.add("North",textScore);
         fenetre.add("South",pAction);
-        /*fenetre.pack();
-        fenetre.setVisible(true);*/
+        
+        fenetre.pack();
+        fenetre.setVisible(true);
 
     }
-    /*class ActionJouer implements ActionListener
+    class ActionJouer implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
         {
-            ////fm.jeu();
-            //fenetre.dispose();
-            //new FenetreJeu();
+            fm.niveau();
+            /*fenetre.dispose();
+            new FenetreJeu();*/
         }
-    }*/
+    }
     
     class ActionRetour implements ActionListener
     {
@@ -148,6 +139,7 @@ public class FenetreNiveau extends JPanel
     {
         public void actionPerformed(ActionEvent e)
         {
+
             System.exit(0);
         }
     }

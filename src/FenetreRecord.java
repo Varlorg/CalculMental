@@ -2,16 +2,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.*;
+import java.util.*;
+import java.io.*;
 
-public class FenetreMenu  extends JPanel
+public class FenetreRecord  extends JPanel implements KeyListener 
 {
     FenetreModele fm;
     JFrame fenetre;
-
+    
+	HighscoreManager hm = new HighscoreManager();
+	JLabel labelScore= new JLabel();
+	JTextField labelPseudo;
+	String pseudo;
+	int score;
+	
     JPanel pAction = new JPanel();
-    JPanel pCentre = new JPanel();
+    JPanel pRecord = new JPanel();
     JButton bJeu = new JButton("Jouer");
-    JButton bScore = new JButton("Score");
+    JButton bScore = new JButton("Retour");
     JButton bQuitter = new JButton("Quitter");
     JMenuItem mReset;
     JMenuItem mJouer;
@@ -27,16 +35,25 @@ public class FenetreMenu  extends JPanel
     JMenuItem mAbout;
     //bQuitter.addActionListener(new ActionQuitter());
 
-	JLabel labelPresentation = new JLabel("Bienvenue dans ce jeu de calcul mental !");
     /*fMenu.pack();
     fMenu.setVisible(true);*/
 
-    public FenetreMenu(FenetreModele f)
+    public FenetreRecord(FenetreModele f, int points)
     {
+		score = points;
+		System.out.println("" + score);
         this.fm = f;
-        this.fm.setTitre("Calcul Mental - Menu");
+        this.fm.setTitre("Calcul Mental - Enregistrement");
         this.fenetre = fm.getJFrame();
-		//labelPresentation.setText("Bienvenue dans ce jeu de calcul mental !");
+
+		/*try{
+			FileInputStream fscores = new FileInputStream("scores");
+			ObjectInputStream ois = new ObjectInputStream(fscores);
+			scores = (Hashtable) ois.readObject();
+		}catch(Exception e){
+			System.out.println("Table des scores inexistante !");
+		}*/
+		
 	   /*Creation du menu
 		 *
 		 */
@@ -77,10 +94,17 @@ public class FenetreMenu  extends JPanel
 		/* Ajout de la barre  a la fenetre */
 		fenetre.setJMenuBar(menuBar);
 
-
+		/* Demande du pseudo */
+		labelScore.setText("Vous avez obtenu un score de " + score);
+		pRecord.add(labelScore);
+        labelPseudo = new JTextField();
+        labelPseudo.setPreferredSize( new Dimension( 100, 24 ) );
+        labelPseudo.addKeyListener(this);	
+        labelPseudo.setEnabled(true);
+        pRecord.add(labelPseudo);
 
         bQuitter.addActionListener(new ActionQuitter());
-        mJouer = new JMenuItem("Niveau");
+        mJouer = new JMenuItem("Jouer");
         mJouer.setFont(FenetreModele.fCambMini);
         mJouer.addActionListener(new ActionJouer());
 
@@ -88,18 +112,17 @@ public class FenetreMenu  extends JPanel
         mJeu.add(mQuitter);
 
         bJeu.addActionListener(new ActionJouer());
-        bScore.addActionListener(new ActionScore());
-        
-        pCentre.add(labelPresentation);
+        bScore.addActionListener(new ActionRetour());
         
         pAction.add(bJeu);
         pAction.add(bScore);
         pAction.add(bQuitter);
         
-
-        fenetre.getContentPane().add(pAction, BorderLayout.SOUTH);
-        fenetre.getContentPane().add(pCentre, BorderLayout.CENTER);
         
+       /* fenetre.add("South",pAction);
+        fenetre.add("Center",pRecord);*/
+        fenetre.getContentPane().add(pRecord, BorderLayout.NORTH);
+        fenetre.getContentPane().add(pAction, BorderLayout.SOUTH);
         fenetre.pack();
         fenetre.setVisible(true);
 
@@ -114,11 +137,11 @@ public class FenetreMenu  extends JPanel
         }
     }
     
-    class ActionScore implements ActionListener
+    class ActionRetour implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
         {
-            fm.score();
+            fm.menu();
         }
     }
     
@@ -128,6 +151,25 @@ public class FenetreMenu  extends JPanel
         {
             System.exit(0);
         }
+    }
+    
+     public void keyTyped(KeyEvent e) {
+    }
+
+    public void keyPressed(KeyEvent e) {
+
+        if (e.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+			pseudo = labelPseudo.getText();
+			hm.addScore(pseudo, score);
+			System.out.println("Ajout de "+pseudo + "avec un score de "+score);
+			fm.menu();
+        }
+
+
+    }
+
+    public void keyReleased(KeyEvent e) {
     }
 
 }

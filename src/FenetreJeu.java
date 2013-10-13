@@ -5,6 +5,7 @@ import javax.swing.event.*;
 
 public class FenetreJeu extends JPanel implements KeyListener 
 {
+	final int duree = 10 ;
     JeuCalcul jeu;
     FenetreModele fm;
     JFrame fenetre;
@@ -21,7 +22,7 @@ public class FenetreJeu extends JPanel implements KeyListener
     JPanel pChrono;
     java.util.Timer horloge;
     JLabel labelTemps;
-    int temps= 30;
+    int temps=duree;
     JLabel textTemps;
 
     JPanel pJeu = new JPanel(new BorderLayout());
@@ -174,10 +175,11 @@ public class FenetreJeu extends JPanel implements KeyListener
                     //labelResultat = labelResultatFaux;
                     labelResultat.setIcon(iResultatFaux);
                     labelSolution.setForeground(Color.red);
+                    labelSolution.setText( "La solution de " + jeu.retournerExpression().toString2() + " est " + reponse  );
+					pJeu.add(labelSolution, BorderLayout.SOUTH);
+					labelSolution.setPreferredSize(new Dimension(170,30));
                 }
-                labelSolution.setText( "La solution de " + jeu.retournerExpression().toString2() + " est " + reponse  );
-                pJeu.add(labelSolution, BorderLayout.SOUTH);
-                labelSolution.setPreferredSize(new Dimension(170,30));
+                
                 jeu.supprimerExpression();
                 labelExpression.setText(jeu.retournerExpression().toString());
                 reponse = jeu.retournerExpression().solution();
@@ -232,7 +234,8 @@ public class FenetreJeu extends JPanel implements KeyListener
             if( !bJouer.isEnabled())
                 bJouer.setEnabled(true);
 
-            temps = 30;
+			bReset.setEnabled(false);
+            temps = duree;
             labelTemps.setText(temps+"");
         }
     }
@@ -258,13 +261,16 @@ public class FenetreJeu extends JPanel implements KeyListener
         public void run() {
             if(temps !=0)
                 temps--;
-            if (temps == 0)
+            if (temps <= 0)
             {
                 //labelReponse.disable();
                 labelReponse.setEnabled(false);
                 horloge.cancel();
                 horloge.purge();
-                horloge= null;
+                horloge = null;
+                bJouer.setEnabled(false);
+                bReset.setEnabled(false);
+                fm.record(jeu.getScore());
             }
             labelTemps.setText(temps+"");
         }
