@@ -1,7 +1,3 @@
-import vue.*;
-import modele.*;
-import score.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -9,13 +5,17 @@ import javax.swing.event.*;
 
 public class JeuCalculGUI
 {
+    JeuCalcul jeu;
+
     public JeuCalculGUI()
     {
-        new FenetreMenu(new FenetreModele());
+        new FenetreMenu();
     }
 
     public static void main(String[] args)
     {
+        //fenetreMenu();
         new JeuCalculGUI();
+        
     }
 }
