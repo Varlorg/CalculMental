@@ -3,7 +3,7 @@ default: classes
 
 classes:
 	@mkdir -p bin
-	javac -g -classpath bin -sourcepath src src/*.java -d bin
+	javac -g -classpath bin -sourcepath src src/JeuCalculGUI.java -d bin
 
 jar:
 	make classes
