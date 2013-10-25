@@ -141,7 +141,7 @@ public class FenetreJeu extends JPanel implements KeyListener
                     labelSolution.setForeground(Color.red);
                     labelSolution.setText( "La solution de " + jeu.retournerExpression().toString2() + " est " + reponse  );
                     pJeu.add(labelSolution, BorderLayout.SOUTH);
-                    labelSolution.setPreferredSize(new Dimension(170,30));
+                    labelSolution.setPreferredSize(new Dimension(200,30));
                 }
 
                 jeu.supprimerExpression();
