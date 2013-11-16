@@ -5,8 +5,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 
+ 
 public class FenetreModele extends JFrame
 {
+ 
     /** La couleur bleu.*/
     public static final Color VERT = new Color(48, 145, 0, 255);
 
@@ -27,24 +29,33 @@ public class FenetreModele extends JFrame
     public static final Font fCamb = new Font("Cambria",Font.BOLD , 14);
     public static final Font fCambMini = new Font("Cambria",Font.BOLD , 13);
 
-    JMenuBar menuBar = new JMenuBar();
+    JMenuBar menuBar;
 
-    JMenu mJeu = new JMenu("Jeu");
-    JMenuItem mJouer = new JMenuItem("Jouer");
-    JMenuItem mQuitter = new JMenuItem("Quitter");
+    JMenu mJeu;
+    JMenuItem mJouer;
+    JMenuItem mQuitter;
 
-    JMenu mApropos = new JMenu("Aide");
-    JMenuItem mVersion = new JMenuItem("Version");
-    JMenuItem mAbout = new JMenuItem("A propos");
+    JMenu mApropos;
+    JMenuItem mVersion;
+    JMenuItem mAbout;
 
     public FenetreModele()
     {
+			setBestLookAndFeelAvailable();
         /*
          *
          * Creation du menu
          *
          */
+		menuBar = new JMenuBar();
 
+		mJeu = new JMenu("Jeu");
+		mJouer = new JMenuItem("Jouer");
+		mQuitter = new JMenuItem("Quitter");
+
+		mApropos = new JMenu("Aide");
+		mVersion = new JMenuItem("Version");
+		mAbout = new JMenuItem("A propos");
         /* sous-menu Jeu */
         mJeu.setFont(FenetreModele.fCambMini);
         mQuitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
@@ -148,4 +159,21 @@ public class FenetreModele extends JFrame
     {
         this.setTitle(nom);
     }
+    
+    //Permet de changer le look graphique 
+	public static void setBestLookAndFeelAvailable(){
+	   String system_lf = UIManager.getSystemLookAndFeelClassName().toLowerCase();
+	   if(system_lf.contains("metal")){
+		   try {
+			   UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			   //UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+			   //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		   }catch (Exception e) {}
+	   }else{
+		   try {
+			   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		   }catch (Exception e) {}
+	   }
+	 }
 }
+
