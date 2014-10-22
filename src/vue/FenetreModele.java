@@ -29,10 +29,14 @@ public class FenetreModele extends JFrame
     public static final Font fCamb = new Font("Cambria",Font.BOLD , 14);
     public static final Font fCambMini = new Font("Cambria",Font.BOLD , 13);
 
+    Component c = this.getGlassPane();
+    JFrame f = this;
+
     JMenuBar menuBar;
 
     JMenu mJeu;
     JMenuItem mJouer;
+    JMenuItem mTheme;
     JMenuItem mQuitter;
 
     JMenu mApropos;
@@ -50,8 +54,30 @@ public class FenetreModele extends JFrame
 		menuBar = new JMenuBar();
 
 		mJeu = new JMenu("Jeu");
+		mTheme = new JMenu("Thèmes");
 		mJouer = new JMenuItem("Jouer");
+		//mActualiser = new JMenuItem("Actualiser");
 		mQuitter = new JMenuItem("Quitter");
+
+        JRadioButtonMenuItem radioTheme1 = new JRadioButtonMenuItem("Nimbus");
+        JRadioButtonMenuItem radioTheme2 = new JRadioButtonMenuItem("Gtk");
+        JRadioButtonMenuItem radioTheme3 = new JRadioButtonMenuItem("Basic");
+
+        //On met nos radios dans un ButtonGroup
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(radioTheme1);
+        bg.add(radioTheme2);
+        bg.add(radioTheme3);
+        //On présélectionne la première radio
+        radioTheme3.setSelected(true);
+        this.mTheme.add(radioTheme1);
+        this.mTheme.add(radioTheme2);
+        this.mTheme.add(radioTheme3);
+
+        ThemeListener fl = new ThemeListener();
+        radioTheme1.addActionListener(fl);
+        radioTheme2.addActionListener(fl);
+        radioTheme3.addActionListener(fl);
 
 		mApropos = new JMenu("Aide");
 		mVersion = new JMenuItem("Version");
@@ -70,6 +96,8 @@ public class FenetreModele extends JFrame
         mJouer.setFont(FenetreModele.fCambMini);
 
         mJeu.add(mJouer);
+        mJeu.add(mTheme);
+        //mJeu.add(mActualiser);
         mJeu.add(mQuitter);
 
         /* sous-menu A propos */
@@ -113,6 +141,27 @@ public class FenetreModele extends JFrame
 
         this.pack();
         this.setVisible(true);
+    }
+
+    class ThemeListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            try{
+                String theme = (((JRadioButtonMenuItem)e.getSource()).getText());
+                if(theme.equals("Nimbus"))
+                {
+                   UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+                }else if (theme.equals("Gtk"))
+                {
+                   UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+                }else if (theme.equals("Basic"))
+                {
+                   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                }
+            }catch(Exception ex){
+            }
+            SwingUtilities.updateComponentTreeUI(f);
+            f.pack();
+        }    
     }
 
     public void jeu(char n)
@@ -165,9 +214,9 @@ public class FenetreModele extends JFrame
 	   String system_lf = UIManager.getSystemLookAndFeelClassName().toLowerCase();
 	   if(system_lf.contains("metal")){
 		   try {
-			   UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			   //UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			   //UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-			   //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		   }catch (Exception e) {}
 	   }else{
 		   try {
